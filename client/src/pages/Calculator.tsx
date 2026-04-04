@@ -149,7 +149,11 @@ export default function Calculator() {
   // Animate step content on step change
   useEffect(() => {
     if (stepContentRef.current) {
-      gsap.from(stepContentRef.current, { opacity: 0, y: 15, duration: 0.4, ease: 'power2.out' });
+      gsap.fromTo(
+        stepContentRef.current,
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', clearProps: 'all' },
+      );
     }
   }, [step]);
 
