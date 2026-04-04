@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import gsap from 'gsap';
 import { format, differenceInYears, parseISO } from 'date-fns';
 import {
   Search,
@@ -143,6 +144,14 @@ export default function Calculator() {
   // -- Wizard state --
   const [step, setStep] = useState(0);
   const [errors, setErrors] = useState<StepErrors>({});
+  const stepContentRef = useRef<HTMLDivElement>(null);
+
+  // Animate step content on step change
+  useEffect(() => {
+    if (stepContentRef.current) {
+      gsap.from(stepContentRef.current, { opacity: 0, y: 15, duration: 0.4, ease: 'power2.out' });
+    }
+  }, [step]);
 
   // -- Step 1 --
   const [employeeSearch, setEmployeeSearch] = useState('');
@@ -1256,10 +1265,12 @@ export default function Calculator() {
       {renderStepIndicator()}
 
       {/* Step content */}
-      {step === 0 && renderStep1()}
-      {step === 1 && renderStep2()}
-      {step === 2 && renderStep3()}
-      {step === 3 && renderStep4()}
+      <div ref={stepContentRef} key={step}>
+        {step === 0 && renderStep1()}
+        {step === 1 && renderStep2()}
+        {step === 2 && renderStep3()}
+        {step === 3 && renderStep4()}
+      </div>
 
       {/* Navigation */}
       {step < 3 && (

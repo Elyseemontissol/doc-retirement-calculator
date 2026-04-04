@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import gsap from 'gsap';
 import {
   LayoutDashboard,
   Users,
@@ -75,6 +76,29 @@ export default function Layout() {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarRef = useRef<HTMLElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
+  const mobileSidebarRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      if (sidebarRef.current) {
+        gsap.from(sidebarRef.current.querySelectorAll('.nav-link, .nav-link-active'), {
+          opacity: 0, x: -15, stagger: 0.06, duration: 0.4, ease: 'power2.out',
+        });
+      }
+      if (mainRef.current) {
+        gsap.from(mainRef.current, { opacity: 0, duration: 0.4, ease: 'power2.out' });
+      }
+    });
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    if (sidebarOpen && mobileSidebarRef.current) {
+      gsap.from(mobileSidebarRef.current, { x: -264, duration: 0.3, ease: 'power2.out' });
+    }
+  }, [sidebarOpen]);
 
   const handleLogout = () => {
     logout();
@@ -167,7 +191,7 @@ export default function Layout() {
         {/* -------------------------------------------------------------- */}
         {/*  Sidebar (desktop)                                              */}
         {/* -------------------------------------------------------------- */}
-        <aside className="hidden w-60 shrink-0 border-r border-neutral-200 bg-white lg:flex lg:flex-col">
+        <aside ref={sidebarRef} className="hidden w-60 shrink-0 border-r border-neutral-200 bg-white lg:flex lg:flex-col">
           <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4 scrollbar-thin">
             {renderNavLinks()}
           </nav>
@@ -184,7 +208,7 @@ export default function Layout() {
               onClick={() => setSidebarOpen(false)}
             />
             {/* Drawer */}
-            <aside className="fixed inset-y-0 left-0 z-20 w-64 bg-white pt-16 shadow-lg lg:hidden">
+            <aside ref={mobileSidebarRef} className="fixed inset-y-0 left-0 z-20 w-64 bg-white pt-16 shadow-lg lg:hidden">
               <nav className="space-y-1 px-3 py-4">
                 {renderNavLinks(() => setSidebarOpen(false))}
               </nav>
@@ -196,7 +220,7 @@ export default function Layout() {
         {/*  Main content                                                   */}
         {/* -------------------------------------------------------------- */}
         <div className="flex flex-1 flex-col overflow-hidden">
-          <main className="flex-1 overflow-y-auto bg-neutral-50 p-4 sm:p-6 lg:p-8">
+          <main ref={mainRef} className="flex-1 overflow-y-auto bg-neutral-50 p-4 sm:p-6 lg:p-8">
             <Outlet />
           </main>
 

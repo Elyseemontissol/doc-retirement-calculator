@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import gsap from 'gsap';
 import {
   BarChart,
   Bar,
@@ -126,7 +127,7 @@ interface StatCardProps {
 
 function StatCard({ icon, label, value, color }: StatCardProps) {
   return (
-    <div className="stat-card">
+    <div className="stat-card dash-stat">
       <div className="flex items-center gap-3">
         <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}>
           {icon}
@@ -353,6 +354,8 @@ function EmployeeDashboard({ user }: { user: { firstName: string; lastName: stri
 export default function Dashboard() {
   const { user } = useAuth();
   const isEmployee = user?.role === 'employee';
+  const dashRef = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false);
 
   const [dashboard, setDashboard] = useState<DashboardReport | null>(null);
   const [recentCases, setRecentCases] = useState<RetirementCase[]>([]);
@@ -391,6 +394,19 @@ export default function Dashboard() {
       cancelled = true;
     };
   }, [isEmployee]);
+
+  // Animate dashboard elements after data loads
+  useEffect(() => {
+    if (!loading && dashboard && dashRef.current && !hasAnimated.current) {
+      hasAnimated.current = true;
+      const ctx = gsap.context(() => {
+        gsap.from('.dash-stat', { opacity: 0, y: 20, stagger: 0.08, duration: 0.4, ease: 'power2.out' });
+        gsap.from('.dash-chart', { opacity: 0, y: 15, duration: 0.5, delay: 0.35, ease: 'power2.out', stagger: 0.15 });
+        gsap.from('.dash-row', { opacity: 0, x: -10, stagger: 0.05, duration: 0.3, delay: 0.5, ease: 'power2.out' });
+      }, dashRef);
+      return () => ctx.revert();
+    }
+  }, [loading, dashboard]);
 
   // Employee role gets a different dashboard
   if (isEmployee && user) {
@@ -465,7 +481,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
+    <div ref={dashRef}>
       {/* Page Header */}
       <div className="page-header">
         <div>
@@ -520,7 +536,7 @@ export default function Dashboard() {
       {/* Charts */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
         {/* Cases by Status Bar Chart */}
-        <div className="card">
+        <div className="card dash-chart">
           <div className="card-header">
             <h3 className="text-base font-semibold text-primary-800">Cases by Status</h3>
           </div>
@@ -547,7 +563,7 @@ export default function Dashboard() {
         </div>
 
         {/* Retirement System Pie Chart */}
-        <div className="card">
+        <div className="card dash-chart">
           <div className="card-header">
             <h3 className="text-base font-semibold text-primary-800">
               Employees by Retirement System
@@ -625,7 +641,7 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {recentCases.map((rc) => (
-                  <tr key={rc.id}>
+                  <tr key={rc.id} className="dash-row">
                     <td>
                       <Link
                         to={`/cases/${rc.id}`}

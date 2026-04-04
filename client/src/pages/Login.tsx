@@ -1,5 +1,6 @@
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect, type FormEvent } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import gsap from 'gsap';
 import { useAuth } from '../context/AuthContext';
 import { Shield, Loader2, AlertCircle } from 'lucide-react';
 
@@ -21,6 +22,15 @@ export default function Login() {
       navigate(from, { replace: true });
     }
   }, [isAuthenticated, from, navigate]);
+
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(cardRef.current, { opacity: 0, y: 30, duration: 0.5, ease: 'power2.out' });
+    });
+    return () => ctx.revert();
+  }, []);
 
   if (isAuthenticated) {
     return null;
@@ -54,7 +64,7 @@ export default function Login() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 px-4">
       {/* Login card */}
-      <div className="w-full max-w-md">
+      <div ref={cardRef} className="w-full max-w-md">
         <div className="card overflow-hidden">
           {/* Header */}
           <div className="bg-primary-800 px-6 py-8 text-center text-white">
