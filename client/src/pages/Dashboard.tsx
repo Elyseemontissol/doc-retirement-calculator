@@ -31,13 +31,15 @@ import {
 import { format } from 'date-fns';
 import { reports, cases as casesApi, employees as employeesApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import type { DashboardReport, RetirementCase, CaseStatus, Employee } from '../types';
 
 // ---------------------------------------------------------------------------
 //  Constants
 // ---------------------------------------------------------------------------
 
-const PIE_COLORS = ['#1e3a5f', '#c5a54e', '#3b82f6', '#10b981', '#f59e0b'];
+const PIE_COLORS_LIGHT = ['#1e3a5f', '#c5a54e', '#3b82f6', '#10b981', '#f59e0b'];
+const PIE_COLORS_DARK  = ['#5b7faf', '#f3d98a', '#60a5fa', '#34d399', '#fbbf24'];
 
 const SYSTEM_LABELS: Record<string, string> = {
   CSRS: 'CSRS',
@@ -352,6 +354,8 @@ function EmployeeDashboard({ user }: { user: { firstName: string; lastName: stri
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const isEmployee = user?.role === 'employee';
 
   const [dashboard, setDashboard] = useState<DashboardReport | null>(null);
@@ -528,17 +532,20 @@ export default function Dashboard() {
             {casesByStatusData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={casesByStatusData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                  <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#334155' : '#e5e7eb'} />
+                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#6b7280' }} />
+                  <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: isDark ? '#94a3b8' : '#6b7280' }} />
                   <Tooltip
                     contentStyle={{
                       borderRadius: '8px',
-                      border: '1px solid #e5e7eb',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                      border: `1px solid ${isDark ? '#334155' : '#e5e7eb'}`,
+                      boxShadow: isDark ? '0 2px 8px rgba(0,0,0,0.3)' : '0 2px 8px rgba(0,0,0,0.08)',
+                      backgroundColor: isDark ? '#1e293b' : '#ffffff',
+                      color: isDark ? '#e2e8f0' : '#1f2937',
                     }}
+                    labelStyle={{ color: isDark ? '#f1f5f9' : '#111827' }}
                   />
-                  <Bar dataKey="count" name="Cases" fill="#1e3a5f" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="count" name="Cases" fill={isDark ? '#5b7faf' : '#1e3a5f'} radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             ) : (
@@ -570,20 +577,29 @@ export default function Dashboard() {
                     label={({ name, percent }) =>
                       `${name} (${(percent * 100).toFixed(0)}%)`
                     }
-                    labelLine
+                    labelLine={{ stroke: isDark ? '#94a3b8' : '#6b7280' }}
+                    style={{ fill: isDark ? '#e2e8f0' : '#374151', fontSize: 12 }}
                   >
-                    {retirementSystemData.map((_, idx) => (
-                      <Cell key={idx} fill={PIE_COLORS[idx % PIE_COLORS.length]} />
-                    ))}
+                    {retirementSystemData.map((_, idx) => {
+                      const colors = isDark ? PIE_COLORS_DARK : PIE_COLORS_LIGHT;
+                      return <Cell key={idx} fill={colors[idx % colors.length]} />;
+                    })}
                   </Pie>
                   <Tooltip
                     contentStyle={{
                       borderRadius: '8px',
-                      border: '1px solid #e5e7eb',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                      border: `1px solid ${isDark ? '#334155' : '#e5e7eb'}`,
+                      boxShadow: isDark ? '0 2px 8px rgba(0,0,0,0.3)' : '0 2px 8px rgba(0,0,0,0.08)',
+                      backgroundColor: isDark ? '#1e293b' : '#ffffff',
+                      color: isDark ? '#e2e8f0' : '#1f2937',
                     }}
+                    labelStyle={{ color: isDark ? '#f1f5f9' : '#111827' }}
                   />
-                  <Legend />
+                  <Legend
+                    formatter={(value: string) => (
+                      <span style={{ color: isDark ? '#cbd5e1' : '#374151' }}>{value}</span>
+                    )}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             ) : (
