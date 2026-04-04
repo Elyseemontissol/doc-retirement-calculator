@@ -570,8 +570,13 @@ export default function Dashboard() {
                   <XAxis dataKey="name" tick={{ fontSize: 12 }} className="chart-axis" />
                   <YAxis allowDecimals={false} tick={{ fontSize: 12 }} className="chart-axis" />
                   <Tooltip
-                    contentStyle={{ borderRadius: '8px' }}
-                    wrapperClassName="chart-tooltip"
+                    contentStyle={{
+                      borderRadius: '8px',
+                      backgroundColor: 'var(--chart-tooltip-bg, #ffffff)',
+                      border: '1px solid var(--chart-tooltip-border, #e5e7eb)',
+                      color: 'var(--chart-tooltip-text, #1f2937)',
+                    }}
+                    labelStyle={{ color: 'var(--chart-tooltip-text, #1f2937)' }}
                   />
                   <Bar dataKey="count" name="Cases" fill="var(--chart-bar-fill, #1e3a5f)" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -614,8 +619,13 @@ export default function Dashboard() {
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ borderRadius: '8px' }}
-                    wrapperClassName="chart-tooltip"
+                    contentStyle={{
+                      borderRadius: '8px',
+                      backgroundColor: 'var(--chart-tooltip-bg, #ffffff)',
+                      border: '1px solid var(--chart-tooltip-border, #e5e7eb)',
+                      color: 'var(--chart-tooltip-text, #1f2937)',
+                    }}
+                    labelStyle={{ color: 'var(--chart-tooltip-text, #1f2937)' }}
                   />
                   <Legend />
                 </PieChart>
