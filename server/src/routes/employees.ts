@@ -16,18 +16,13 @@ router.get('/', authenticateToken, (req: Request, res: Response) => {
 
   let results = Array.from(employees.values());
 
-  // Filter by search term (name, full name, email, organization)
+  // Filter by search term (name, email, organization)
   if (search) {
-    results = results.filter(emp => {
-      const fullName = `${emp.firstName} ${emp.lastName}`.toLowerCase();
-      return (
-        emp.firstName.toLowerCase().includes(search) ||
-        emp.lastName.toLowerCase().includes(search) ||
-        fullName.includes(search) ||
-        emp.email.toLowerCase().includes(search) ||
-        emp.organizationCode.toLowerCase().includes(search)
-      );
-    }
+    results = results.filter(emp =>
+      emp.firstName.toLowerCase().includes(search) ||
+      emp.lastName.toLowerCase().includes(search) ||
+      emp.email.toLowerCase().includes(search) ||
+      emp.organizationCode.toLowerCase().includes(search)
     );
   }
 

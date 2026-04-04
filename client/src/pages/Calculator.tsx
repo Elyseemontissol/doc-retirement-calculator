@@ -198,9 +198,6 @@ export default function Calculator() {
   }, []);
 
   useEffect(() => {
-    // Don't re-search when an employee is already selected
-    if (selectedEmployee) return;
-
     const t = setTimeout(() => {
       if (employeeSearch.length >= 1) {
         fetchEmployees(employeeSearch);
@@ -211,7 +208,7 @@ export default function Calculator() {
       }
     }, 300);
     return () => clearTimeout(t);
-  }, [employeeSearch, fetchEmployees, selectedEmployee]);
+  }, [employeeSearch, fetchEmployees]);
 
   // Reset retirement type when employee changes (different plan = different options)
   useEffect(() => {
@@ -440,13 +437,7 @@ export default function Calculator() {
                   setSelectedEmployee(null);
                 }}
                 onFocus={() => {
-                  if (selectedEmployee) return;
-                  if (employeeList.length > 0) {
-                    setShowDropdown(true);
-                  } else {
-                    fetchEmployees('');
-                    setShowDropdown(true);
-                  }
+                  if (employeeList.length > 0 && !selectedEmployee) setShowDropdown(true);
                 }}
               />
             </div>
