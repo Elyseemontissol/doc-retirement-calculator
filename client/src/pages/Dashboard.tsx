@@ -574,11 +574,18 @@ export default function Dashboard() {
                     paddingAngle={2}
                     dataKey="value"
                     nameKey="name"
-                    label={({ name, percent }) =>
-                      `${name} (${(percent * 100).toFixed(0)}%)`
-                    }
+                    label={({ name, percent, x, y, textAnchor }) => (
+                      <text
+                        x={x}
+                        y={y}
+                        textAnchor={textAnchor}
+                        fill={isDark ? '#e2e8f0' : '#374151'}
+                        fontSize={12}
+                      >
+                        {`${name} (${(percent * 100).toFixed(0)}%)`}
+                      </text>
+                    )}
                     labelLine={{ stroke: isDark ? '#94a3b8' : '#6b7280' }}
-                    style={{ fill: isDark ? '#e2e8f0' : '#374151', fontSize: 12 }}
                   >
                     {retirementSystemData.map((_, idx) => {
                       const colors = isDark ? PIE_COLORS_DARK : PIE_COLORS_LIGHT;
