@@ -7,8 +7,8 @@ import { syncEmployeeRecord } from '../services/nfcIntegration';
 
 const router = Router();
 
-// GET /api/employees - list employees (HR and admin only, with pagination and search)
-router.get('/', authenticateToken, authorizeRoles('hr_specialist', 'admin'), (req: Request, res: Response) => {
+// GET /api/employees - list employees (all authenticated users can search, employees see limited results)
+router.get('/', authenticateToken, (req: Request, res: Response) => {
   const page = parseInt(req.query.page as string) || 1;
   const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
   const search = (req.query.search as string || '').toLowerCase();
