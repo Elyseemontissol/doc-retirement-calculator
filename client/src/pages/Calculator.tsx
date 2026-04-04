@@ -1112,14 +1112,14 @@ export default function Calculator() {
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <div className="flex items-center justify-center">
                   {pieData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height={280}>
+                    <ResponsiveContainer width="100%" height={320}>
                       <PieChart>
                         <Pie
                           data={pieData}
                           cx="50%"
                           cy="50%"
-                          innerRadius={60}
-                          outerRadius={110}
+                          innerRadius={50}
+                          outerRadius={85}
                           paddingAngle={3}
                           dataKey="value"
                           label={({ name, percent, x, y, textAnchor }) => (
