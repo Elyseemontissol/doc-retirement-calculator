@@ -198,6 +198,7 @@ export default function Calculator() {
   }, []);
 
   useEffect(() => {
+    if (selectedEmployee) return; // Don't re-search after selecting
     const t = setTimeout(() => {
       if (employeeSearch.length >= 1) {
         fetchEmployees(employeeSearch);
@@ -208,7 +209,7 @@ export default function Calculator() {
       }
     }, 300);
     return () => clearTimeout(t);
-  }, [employeeSearch, fetchEmployees]);
+  }, [employeeSearch, fetchEmployees, selectedEmployee]);
 
   // Reset retirement type when employee changes (different plan = different options)
   useEffect(() => {
