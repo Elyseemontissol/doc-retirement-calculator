@@ -278,16 +278,18 @@ export default function EmployeeDetail() {
         {salaryChartData.length > 1 && (
           <div className="card card-body">
             <h3 className="mb-4 text-base font-semibold text-neutral-700">Salary Progression</h3>
+            <div className="chart-container">
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={salaryChartData}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" className="chart-grid" />
                 <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                 <YAxis tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`} tick={{ fontSize: 12 }} />
                 <Tooltip formatter={(v: number) => money(v)} />
-                <Line type="monotone" dataKey="basicPay" stroke="#1e3a5f" name="Basic Pay" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="basicPay" stroke="var(--chart-bar-fill, #1e3a5f)" name="Basic Pay" strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="totalPay" stroke="#10b981" name="Total Pay" strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
+            </div>
           </div>
         )}
 

@@ -1,5 +1,6 @@
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect, type FormEvent } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import gsap from 'gsap';
 import { useAuth } from '../context/AuthContext';
 import { Shield, Loader2, AlertCircle } from 'lucide-react';
 
@@ -13,7 +14,30 @@ export default function Login() {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const shieldRef = useRef<HTMLDivElement>(null);
+
   const from = (location.state as { from?: Location })?.from?.pathname || '/';
+
+  // Mount animations
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(containerRef.current, {
+        opacity: 0,
+        y: 30,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+      gsap.from(shieldRef.current, {
+        scale: 0.5,
+        opacity: 0,
+        duration: 0.6,
+        delay: 0.2,
+        ease: 'back.out(1.4)',
+      });
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
 
   // If already authenticated, redirect
   useEffect(() => {
@@ -54,11 +78,13 @@ export default function Login() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 px-4">
       {/* Login card */}
-      <div className="w-full max-w-md">
+      <div ref={containerRef} className="w-full max-w-md">
         <div className="card overflow-hidden">
           {/* Header */}
           <div className="bg-primary-800 px-6 py-8 text-center text-white">
-            <Shield className="mx-auto h-14 w-14 text-accent-400" />
+            <div ref={shieldRef} className="inline-block">
+              <Shield className="mx-auto h-14 w-14 text-accent-400" />
+            </div>
             <h1 className="mt-4 text-xl font-bold tracking-wide text-white">
               Federal Retirement Benefits Calculator
             </h1>

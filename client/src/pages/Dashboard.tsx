@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import gsap from 'gsap';
 import {
   BarChart,
   Bar,
@@ -126,7 +127,7 @@ interface StatCardProps {
 
 function StatCard({ icon, label, value, color }: StatCardProps) {
   return (
-    <div className="stat-card">
+    <div className="stat-card dash-stat-card">
       <div className="flex items-center gap-3">
         <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${color}`}>
           {icon}
@@ -359,6 +360,42 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(!isEmployee);
   const [error, setError] = useState<string | null>(null);
 
+  const dashboardRef = useRef<HTMLDivElement>(null);
+
+  // Animate stat cards, charts, and table rows when data loads
+  useEffect(() => {
+    if (!dashboard || !dashboardRef.current) return;
+    const ctx = gsap.context(() => {
+      // Stat cards stagger in from bottom
+      gsap.from('.dash-stat-card', {
+        opacity: 0,
+        y: 20,
+        stagger: 0.08,
+        duration: 0.4,
+        ease: 'power2.out',
+      });
+      // Charts fade in after stat cards
+      gsap.from('.dash-chart', {
+        opacity: 0,
+        y: 15,
+        stagger: 0.12,
+        duration: 0.5,
+        delay: 0.35,
+        ease: 'power2.out',
+      });
+      // Table rows stagger in
+      gsap.from('.dash-table-row', {
+        opacity: 0,
+        y: 10,
+        stagger: 0.05,
+        duration: 0.3,
+        delay: 0.5,
+        ease: 'power2.out',
+      });
+    }, dashboardRef);
+    return () => ctx.revert();
+  }, [dashboard]);
+
   useEffect(() => {
     if (isEmployee) return;
     let cancelled = false;
@@ -465,7 +502,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
+    <div ref={dashboardRef}>
       {/* Page Header */}
       <div className="page-header">
         <div>
@@ -520,7 +557,7 @@ export default function Dashboard() {
       {/* Charts */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-6">
         {/* Cases by Status Bar Chart */}
-        <div className="card">
+        <div className="card dash-chart">
           <div className="card-header">
             <h3 className="text-base font-semibold text-primary-800">Cases by Status</h3>
           </div>
@@ -547,7 +584,7 @@ export default function Dashboard() {
         </div>
 
         {/* Retirement System Pie Chart */}
-        <div className="card">
+        <div className="card dash-chart">
           <div className="card-header">
             <h3 className="text-base font-semibold text-primary-800">
               Employees by Retirement System
@@ -616,7 +653,7 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {recentCases.map((rc) => (
-                  <tr key={rc.id}>
+                  <tr key={rc.id} className="dash-table-row">
                     <td>
                       <Link
                         to={`/cases/${rc.id}`}
