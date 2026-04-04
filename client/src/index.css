@@ -673,6 +673,13 @@ html.dark .border-emerald-200 { border-color: rgba(16, 185, 129, 0.3); }
 html.dark .border-accent-200  { border-color: rgba(183, 121, 31, 0.3); }
 html.dark .border-blue-200    { border-color: rgba(59, 130, 246, 0.3); }
 
+/* ---- Divide colors ---- */
+html.dark .divide-neutral-100 > :not([hidden]) ~ :not([hidden]) { border-color: #334155; }
+
+/* ---- Fractional opacity backgrounds ---- */
+html.dark .bg-primary-50\/50 { background-color: rgba(30, 58, 95, 0.15); }
+html.dark .bg-neutral-50\/50 { background-color: rgba(15, 23, 42, 0.5); }
+
 /* ---- Ring colors ---- */
 html.dark .ring-primary-200 { --tw-ring-color: rgba(91, 127, 175, 0.3); }
 
