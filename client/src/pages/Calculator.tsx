@@ -198,7 +198,7 @@ export default function Calculator() {
   }, []);
 
   useEffect(() => {
-    if (selectedEmployee) return; // Don't re-search after selecting
+    if (selectedEmployee) return;
     const t = setTimeout(() => {
       if (employeeSearch.length >= 1) {
         fetchEmployees(employeeSearch);
@@ -420,81 +420,81 @@ export default function Calculator() {
           </p>
         </div>
         <div className="card-body">
-          {/* Search input */}
-          <div className="relative">
-            <label className="form-label" htmlFor="emp-search">
-              Employee Name or ID
-            </label>
+          {/* Search input — only shown when no employee is selected */}
+          {!selectedEmployee && (
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
-              <input
-                id="emp-search"
-                type="text"
-                className="form-input pl-9"
-                placeholder="Type a name to search..."
-                value={employeeSearch}
-                onChange={(e) => {
-                  setEmployeeSearch(e.target.value);
-                  setSelectedEmployee(null);
-                }}
-                onFocus={() => {
-                  if (employeeList.length > 0 && !selectedEmployee) setShowDropdown(true);
-                }}
-              />
-            </div>
-            {errors.employee && (
-              <p className="form-error flex items-center gap-1">
-                <AlertCircle className="h-3 w-3" /> {errors.employee}
-              </p>
-            )}
-
-            {/* Dropdown */}
-            {showDropdown && !selectedEmployee && (
-              <div className="absolute z-20 mt-1 w-full rounded-md border border-neutral-200 bg-white shadow-lg max-h-64 overflow-y-auto">
-                {loadingEmployees ? (
-                  <div className="flex items-center justify-center py-6 text-sm text-neutral-500">
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Searching...
-                  </div>
-                ) : employeeList.length === 0 ? (
-                  <div className="px-4 py-6 text-center text-sm text-neutral-500">
-                    No employees found.
-                  </div>
-                ) : (
-                  employeeList.map((emp) => (
-                    <button
-                      key={emp.id}
-                      type="button"
-                      className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm hover:bg-primary-50 transition-colors border-b border-neutral-50 last:border-0"
-                      onClick={() => {
-                        setSelectedEmployee(emp);
-                        setEmployeeSearch(`${emp.firstName} ${emp.lastName}`);
-                        setShowDropdown(false);
-                        setErrors({});
-                      }}
-                    >
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold text-xs">
-                        {emp.firstName[0]}
-                        {emp.lastName[0]}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-neutral-800 truncate">
-                          {emp.firstName} {emp.lastName}
-                        </p>
-                        <p className="text-xs text-neutral-500">
-                          {emp.retirementPlan} &middot; {emp.payPlan}-{emp.grade}/{emp.step}
-                        </p>
-                      </div>
-                      <span className="badge-neutral text-xs">{emp.retirementPlan}</span>
-                    </button>
-                  ))
-                )}
+              <label className="form-label" htmlFor="emp-search">
+                Employee Name or ID
+              </label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+                <input
+                  id="emp-search"
+                  type="text"
+                  className="form-input pl-9"
+                  placeholder="Type a name to search..."
+                  value={employeeSearch}
+                  onChange={(e) => setEmployeeSearch(e.target.value)}
+                  onFocus={() => {
+                    if (employeeList.length > 0) setShowDropdown(true);
+                  }}
+                />
               </div>
-            )}
-          </div>
+              {errors.employee && (
+                <p className="form-error flex items-center gap-1">
+                  <AlertCircle className="h-3 w-3" /> {errors.employee}
+                </p>
+              )}
+
+              {/* Dropdown */}
+              {showDropdown && (
+                <div className="absolute z-20 mt-1 w-full rounded-md border border-neutral-200 bg-white shadow-lg max-h-64 overflow-y-auto">
+                  {loadingEmployees ? (
+                    <div className="flex items-center justify-center py-6 text-sm text-neutral-500">
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Searching...
+                    </div>
+                  ) : employeeList.length === 0 ? (
+                    <div className="px-4 py-6 text-center text-sm text-neutral-500">
+                      No employees found.
+                    </div>
+                  ) : (
+                    employeeList.map((emp) => (
+                      <button
+                        key={emp.id}
+                        type="button"
+                        className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm hover:bg-primary-50 transition-colors border-b border-neutral-50 last:border-0"
+                        onClick={() => {
+                          setSelectedEmployee(emp);
+                          setEmployeeSearch('');
+                          setShowDropdown(false);
+                          setEmployeeList([]);
+                          setErrors({});
+                        }}
+                      >
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold text-xs">
+                          {emp.firstName[0]}
+                          {emp.lastName[0]}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-neutral-800 truncate">
+                            {emp.firstName} {emp.lastName}
+                          </p>
+                          <p className="text-xs text-neutral-500">
+                            {emp.retirementPlan} &middot; {emp.payPlan}-{emp.grade}/{emp.step}
+                          </p>
+                        </div>
+                        <span className="badge-neutral text-xs">{emp.retirementPlan}</span>
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Selected employee card */}
           {selectedEmployee && (
-            <div className="mt-6 rounded-lg border border-primary-200 bg-primary-50/50 p-5">
+            <div className="rounded-lg border border-primary-200 bg-primary-50/50 p-5">
               <div className="flex items-start gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-800 text-white font-bold text-sm">
                   {selectedEmployee.firstName[0]}
@@ -506,7 +506,20 @@ export default function Calculator() {
                   </h3>
                   <p className="text-sm text-neutral-600">{selectedEmployee.email}</p>
                 </div>
-                <span className="badge-primary">{selectedEmployee.retirementPlan}</span>
+                <div className="flex items-center gap-2">
+                  <span className="badge-primary">{selectedEmployee.retirementPlan}</span>
+                  <button
+                    type="button"
+                    className="btn-ghost btn-sm"
+                    onClick={() => {
+                      setSelectedEmployee(null);
+                      setEmployeeSearch('');
+                      setEmployeeList([]);
+                    }}
+                  >
+                    Change
+                  </button>
+                </div>
               </div>
               <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
                 <div>
