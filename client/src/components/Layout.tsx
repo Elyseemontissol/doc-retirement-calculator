@@ -12,11 +12,8 @@ import {
   X,
   LogOut,
   Shield,
-  Sun,
-  Moon,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import type { UserRole } from '../types';
 
 // ---------------------------------------------------------------------------
@@ -72,7 +69,6 @@ function roleLabel(role: UserRole): string {
 
 export default function Layout() {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -106,11 +102,11 @@ export default function Layout() {
     });
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-neutral-50 dark:bg-neutral-900">
+    <div className="flex h-screen flex-col overflow-hidden">
       {/* ---------------------------------------------------------------- */}
       {/*  Top navigation bar                                              */}
       {/* ---------------------------------------------------------------- */}
-      <header className="z-30 flex h-16 shrink-0 items-center justify-between bg-primary-800 dark:bg-neutral-950 px-4 text-white shadow-md lg:px-6">
+      <header className="z-30 flex h-16 shrink-0 items-center justify-between bg-primary-800 px-4 text-white shadow-md lg:px-6">
         {/* Left: hamburger + logo */}
         <div className="flex items-center gap-3">
           <button
@@ -135,22 +131,13 @@ export default function Layout() {
 
         {/* Right: user info + logout */}
         {user && (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div className="hidden items-center gap-2 sm:flex">
               <span className="text-sm font-medium">
                 {user.firstName} {user.lastName}
               </span>
               <span className={roleBadgeClass(user.role)}>{roleLabel(user.role)}</span>
             </div>
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="rounded-md p-2 text-primary-200 hover:bg-primary-700 hover:text-white transition-colors"
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            >
-              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
             <button
               type="button"
               onClick={handleLogout}
@@ -167,7 +154,7 @@ export default function Layout() {
         {/* -------------------------------------------------------------- */}
         {/*  Sidebar (desktop)                                              */}
         {/* -------------------------------------------------------------- */}
-        <aside className="hidden w-60 shrink-0 border-r border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 lg:flex lg:flex-col">
+        <aside className="hidden w-60 shrink-0 border-r border-neutral-200 bg-white lg:flex lg:flex-col">
           <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4 scrollbar-thin">
             {renderNavLinks()}
           </nav>
@@ -184,7 +171,7 @@ export default function Layout() {
               onClick={() => setSidebarOpen(false)}
             />
             {/* Drawer */}
-            <aside className="fixed inset-y-0 left-0 z-20 w-64 bg-white dark:bg-neutral-800 pt-16 shadow-lg lg:hidden">
+            <aside className="fixed inset-y-0 left-0 z-20 w-64 bg-white pt-16 shadow-lg lg:hidden">
               <nav className="space-y-1 px-3 py-4">
                 {renderNavLinks(() => setSidebarOpen(false))}
               </nav>
@@ -196,13 +183,13 @@ export default function Layout() {
         {/*  Main content                                                   */}
         {/* -------------------------------------------------------------- */}
         <div className="flex flex-1 flex-col overflow-hidden">
-          <main className="flex-1 overflow-y-auto bg-neutral-50 dark:bg-neutral-900 p-4 sm:p-6 lg:p-8">
+          <main className="flex-1 overflow-y-auto bg-neutral-50 p-4 sm:p-6 lg:p-8">
             <Outlet />
           </main>
 
           {/* Footer */}
-          <footer className="shrink-0 border-t border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-6 py-3">
-            <p className="text-center text-xs text-neutral-500 dark:text-neutral-400">
+          <footer className="shrink-0 border-t border-neutral-200 bg-white px-6 py-3">
+            <p className="text-center text-xs text-neutral-500">
               U.S. Department of Commerce &mdash; Federal Retirement Benefits Calculator
             </p>
           </footer>
