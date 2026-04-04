@@ -91,7 +91,7 @@ const RETIREMENT_TYPES: Record<string, { value: string; label: string }[]> = {
   ],
 };
 
-const PIE_COLORS = ['#1e3a5f', '#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+const PIE_COLORS = ['#5b7faf', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
 const SSA_AGES = Array.from({ length: 9 }, (_, i) => 62 + i);
 
@@ -1122,9 +1122,19 @@ export default function Calculator() {
                           outerRadius={110}
                           paddingAngle={3}
                           dataKey="value"
-                          label={({ name, percent }) =>
-                            `${name} ${(percent * 100).toFixed(0)}%`
-                          }
+                          label={({ name, percent, x, y, textAnchor }) => (
+                            <text
+                              x={x}
+                              y={y}
+                              textAnchor={textAnchor}
+                              fill="var(--chart-label-fill, #374151)"
+                              fontSize={13}
+                              fontWeight={500}
+                            >
+                              {`${name} ${(percent * 100).toFixed(0)}%`}
+                            </text>
+                          )}
+                          labelLine={{ stroke: 'var(--chart-label-line, #6b7280)' }}
                         >
                           {pieData.map((_, i) => (
                             <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
@@ -1132,6 +1142,12 @@ export default function Calculator() {
                         </Pie>
                         <Tooltip
                           formatter={(value: number) => usd(value)}
+                          contentStyle={{
+                            borderRadius: '8px',
+                            backgroundColor: 'var(--chart-tooltip-bg, #ffffff)',
+                            border: '1px solid var(--chart-tooltip-border, #e5e7eb)',
+                            color: 'var(--chart-tooltip-text, #1f2937)',
+                          }}
                         />
                         <Legend />
                       </PieChart>
