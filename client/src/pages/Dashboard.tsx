@@ -567,10 +567,19 @@ export default function Dashboard() {
                     paddingAngle={2}
                     dataKey="value"
                     nameKey="name"
-                    label={({ name, percent }) =>
-                      `${name} (${(percent * 100).toFixed(0)}%)`
-                    }
-                    labelLine
+                    label={({ name, percent, x, y, textAnchor }) => (
+                      <text
+                        x={x}
+                        y={y}
+                        textAnchor={textAnchor}
+                        fill="var(--chart-label-fill, #374151)"
+                        fontSize={13}
+                        fontWeight={500}
+                      >
+                        {`${name} (${(percent * 100).toFixed(0)}%)`}
+                      </text>
+                    )}
+                    labelLine={{ stroke: 'var(--chart-label-line, #6b7280)' }}
                   >
                     {retirementSystemData.map((_, idx) => (
                       <Cell key={idx} fill={PIE_COLORS[idx % PIE_COLORS.length]} />
