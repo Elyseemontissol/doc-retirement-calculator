@@ -22,11 +22,16 @@ import {
   CalendarRange,
   AlertCircle,
   RefreshCw,
+  Calculator,
+  FileText,
+  GraduationCap,
+  FolderOpen,
+  Shield,
 } from 'lucide-react';
 import { format } from 'date-fns';
-import { reports, cases as casesApi } from '../services/api';
+import { reports, cases as casesApi, employees as employeesApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import type { DashboardReport, RetirementCase, CaseStatus } from '../types';
+import type { DashboardReport, RetirementCase, CaseStatus, Employee } from '../types';
 
 // ---------------------------------------------------------------------------
 //  Constants
@@ -139,14 +144,223 @@ function StatCard({ icon, label, value, color }: StatCardProps) {
 //  Dashboard component
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+//  Employee Dashboard (for employee role)
+// ---------------------------------------------------------------------------
+
+function EmployeeDashboard({ user }: { user: { firstName: string; lastName: string; employeeId?: string } }) {
+  const [employee, setEmployee] = useState<Employee | null>(null);
+  const [myCases, setMyCases] = useState<RetirementCase[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchData() {
+      setLoading(true);
+      try {
+        const promises: Promise<unknown>[] = [casesApi.list({ limit: 10 })];
+        if (user.employeeId) {
+          promises.push(employeesApi.getById(user.employeeId));
+        }
+        const results = await Promise.all(promises);
+        if (!cancelled) {
+          const casesData = results[0] as { data: RetirementCase[] };
+          setMyCases(casesData.data);
+          if (results[1]) setEmployee(results[1] as Employee);
+        }
+      } catch {
+        // Silently handle — show what we can
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    fetchData();
+    return () => { cancelled = true; };
+  }, [user.employeeId]);
+
+  if (loading) {
+    return (
+      <div>
+        <div className="page-header">
+          <div>
+            <h1 className="page-title">Dashboard</h1>
+            <p className="page-subtitle">Loading your profile...</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+          {Array.from({ length: 4 }).map((_, i) => <StatCardSkeleton key={i} />)}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Welcome, {user.firstName}</h1>
+          <p className="page-subtitle">
+            Your federal retirement benefits dashboard
+          </p>
+        </div>
+      </div>
+
+      {/* Employee summary */}
+      {employee && (
+        <div className="card mb-6">
+          <div className="card-body">
+            <div className="flex items-start gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary-800 text-white font-bold text-lg">
+                {user.firstName[0]}{user.lastName[0]}
+              </div>
+              <div className="flex-1">
+                <h2 className="text-lg font-bold text-primary-800">{user.firstName} {user.lastName}</h2>
+                <p className="text-sm text-neutral-500">{employee.email}</p>
+                <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div>
+                    <p className="text-xs text-neutral-400 uppercase tracking-wider">Retirement Plan</p>
+                    <p className="font-semibold text-primary-700">{employee.retirementPlan}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-neutral-400 uppercase tracking-wider">Grade / Step</p>
+                    <p className="font-semibold">{employee.payPlan}-{employee.grade}/{employee.step}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-neutral-400 uppercase tracking-wider">Current Salary</p>
+                    <p className="font-semibold">${employee.currentSalary.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-neutral-400 uppercase tracking-wider">Service Date</p>
+                    <p className="font-semibold">{format(new Date(employee.serviceComputationDate), 'MMM d, yyyy')}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Quick Actions */}
+      <h3 className="text-base font-semibold text-primary-800 mb-3">Quick Actions</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <Link to="/calculator" className="card hover:shadow-md transition-shadow no-underline">
+          <div className="card-body flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-100">
+              <Calculator className="h-5 w-5 text-primary-700" />
+            </div>
+            <div>
+              <p className="font-semibold text-primary-800">Calculate Benefits</p>
+              <p className="text-xs text-neutral-500">Estimate your retirement</p>
+            </div>
+          </div>
+        </Link>
+        <Link to="/cases" className="card hover:shadow-md transition-shadow no-underline">
+          <div className="card-body flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-100">
+              <FolderOpen className="h-5 w-5 text-accent-700" />
+            </div>
+            <div>
+              <p className="font-semibold text-primary-800">My Cases</p>
+              <p className="text-xs text-neutral-500">View retirement cases</p>
+            </div>
+          </div>
+        </Link>
+        <Link to="/forms" className="card hover:shadow-md transition-shadow no-underline">
+          <div className="card-body flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
+              <FileText className="h-5 w-5 text-blue-700" />
+            </div>
+            <div>
+              <p className="font-semibold text-primary-800">Forms Center</p>
+              <p className="text-xs text-neutral-500">Generate OPM forms</p>
+            </div>
+          </div>
+        </Link>
+        <Link to="/education" className="card hover:shadow-md transition-shadow no-underline">
+          <div className="card-body flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success-100">
+              <GraduationCap className="h-5 w-5 text-success-700" />
+            </div>
+            <div>
+              <p className="font-semibold text-primary-800">Learn</p>
+              <p className="text-xs text-neutral-500">Education & resources</p>
+            </div>
+          </div>
+        </Link>
+      </div>
+
+      {/* My Cases */}
+      {myCases.length > 0 && (
+        <div className="card">
+          <div className="card-header flex items-center justify-between">
+            <h3 className="text-base font-semibold text-primary-800">My Cases</h3>
+            <Link to="/cases" className="btn-secondary btn-sm no-underline">View All</Link>
+          </div>
+          <div className="table-wrapper border-0 rounded-none rounded-b-lg">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Case #</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Retirement Date</th>
+                  <th>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {myCases.map((rc) => (
+                  <tr key={rc.id}>
+                    <td>
+                      <Link to={`/cases/${rc.id}`} className="font-medium text-primary-700 no-underline hover:underline">
+                        {rc.caseNumber}
+                      </Link>
+                    </td>
+                    <td className="capitalize">{rc.type.replace(/_/g, ' ')}</td>
+                    <td>
+                      <span className={STATUS_BADGE[rc.status as CaseStatus] ?? 'badge-neutral'}>
+                        {statusLabel(rc.status)}
+                      </span>
+                    </td>
+                    <td>{format(new Date(rc.retirementDate), 'MMM d, yyyy')}</td>
+                    <td>{format(new Date(rc.createdAt), 'MMM d, yyyy')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {myCases.length === 0 && (
+        <div className="card">
+          <div className="card-body text-center py-10">
+            <Shield className="h-12 w-12 text-neutral-300 mx-auto mb-3" />
+            <p className="text-neutral-500">No retirement cases yet.</p>
+            <Link to="/calculator" className="btn-primary mt-4 inline-flex no-underline">
+              Start a Benefits Calculation
+            </Link>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+//  Admin/HR Dashboard
+// ---------------------------------------------------------------------------
+
 export default function Dashboard() {
   const { user } = useAuth();
+  const isEmployee = user?.role === 'employee';
+
   const [dashboard, setDashboard] = useState<DashboardReport | null>(null);
   const [recentCases, setRecentCases] = useState<RetirementCase[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!isEmployee);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (isEmployee) return;
     let cancelled = false;
 
     async function fetchData() {
@@ -176,7 +390,12 @@ export default function Dashboard() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [isEmployee]);
+
+  // Employee role gets a different dashboard
+  if (isEmployee && user) {
+    return <EmployeeDashboard user={user} />;
+  }
 
   // -- Derived chart data --
   const casesByStatusData = dashboard
