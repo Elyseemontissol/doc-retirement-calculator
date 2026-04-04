@@ -14,6 +14,11 @@
     @apply bg-neutral-50 font-sans text-neutral-800 leading-relaxed;
   }
 
+  .dark body,
+  body.dark {
+    @apply bg-neutral-900 text-neutral-200;
+  }
+
   h1,
   h2,
   h3,
@@ -21,6 +26,15 @@
   h5,
   h6 {
     @apply font-semibold text-primary-800 leading-tight;
+  }
+
+  .dark h1,
+  .dark h2,
+  .dark h3,
+  .dark h4,
+  .dark h5,
+  .dark h6 {
+    @apply text-neutral-100;
   }
 
   h1 {
@@ -40,6 +54,10 @@
     @apply text-primary-600 underline-offset-2 hover:text-primary-800 hover:underline transition-colors;
   }
 
+  .dark a {
+    @apply text-primary-300 hover:text-primary-100;
+  }
+
   ::selection {
     @apply bg-primary-200 text-primary-900;
   }
@@ -54,6 +72,10 @@
     @apply rounded-lg border border-neutral-200 bg-white shadow-card;
   }
 
+  .dark .card {
+    @apply border-neutral-700 bg-neutral-800 shadow-none;
+  }
+
   .card-hover {
     @apply card transition-shadow duration-200 hover:shadow-card-hover;
   }
@@ -62,12 +84,20 @@
     @apply border-b border-neutral-200 px-6 py-4;
   }
 
+  .dark .card-header {
+    @apply border-neutral-700;
+  }
+
   .card-body {
     @apply px-6 py-5;
   }
 
   .card-footer {
     @apply border-t border-neutral-100 bg-neutral-50 px-6 py-3 rounded-b-lg;
+  }
+
+  .dark .card-footer {
+    @apply border-neutral-700 bg-neutral-800/50;
   }
 
   /* Buttons */
@@ -92,6 +122,12 @@
            active:bg-primary-100;
   }
 
+  .dark .btn-secondary {
+    @apply border-neutral-600 bg-neutral-700 text-neutral-200
+           hover:bg-neutral-600
+           active:bg-neutral-500;
+  }
+
   .btn-accent {
     @apply btn bg-accent-500 text-white
            hover:bg-accent-600
@@ -112,6 +148,10 @@
            focus:ring-neutral-400;
   }
 
+  .dark .btn-ghost {
+    @apply text-neutral-300 hover:bg-neutral-700 hover:text-neutral-100;
+  }
+
   .btn-sm {
     @apply px-3 py-1.5 text-xs;
   }
@@ -125,6 +165,10 @@
     @apply mb-1.5 block text-sm font-semibold text-neutral-700;
   }
 
+  .dark .form-label {
+    @apply text-neutral-300;
+  }
+
   .form-input {
     @apply w-full rounded-md border border-neutral-300 bg-white px-3 py-2
            text-sm text-neutral-800 shadow-sm
@@ -132,6 +176,13 @@
            focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200
            disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:text-neutral-500
            transition-colors duration-150;
+  }
+
+  .dark .form-input {
+    @apply border-neutral-600 bg-neutral-700 text-neutral-200
+           placeholder:text-neutral-500
+           focus:border-primary-400 focus:ring-primary-800
+           disabled:bg-neutral-800 disabled:text-neutral-500;
   }
 
   .form-select {
@@ -151,8 +202,16 @@
     @apply mt-1 text-xs text-danger-600;
   }
 
+  .dark .form-error {
+    @apply text-danger-400;
+  }
+
   .form-hint {
     @apply mt-1 text-xs text-neutral-500;
+  }
+
+  .dark .form-hint {
+    @apply text-neutral-400;
   }
 
   .form-group {
@@ -185,8 +244,32 @@
     @apply badge bg-neutral-100 text-neutral-700;
   }
 
+  .dark .badge-neutral {
+    @apply bg-neutral-700 text-neutral-300;
+  }
+
   .badge-warning {
     @apply badge bg-yellow-100 text-yellow-800;
+  }
+
+  .dark .badge-primary {
+    @apply bg-primary-900 text-primary-200;
+  }
+
+  .dark .badge-accent {
+    @apply bg-accent-900 text-accent-200;
+  }
+
+  .dark .badge-success {
+    @apply bg-success-900 text-success-200;
+  }
+
+  .dark .badge-danger {
+    @apply bg-danger-900 text-danger-200;
+  }
+
+  .dark .badge-warning {
+    @apply bg-yellow-900 text-yellow-200;
   }
 
   /* Tables */
@@ -194,28 +277,56 @@
     @apply overflow-x-auto rounded-lg border border-neutral-200;
   }
 
+  .dark .table-wrapper {
+    @apply border-neutral-700;
+  }
+
   .table {
     @apply min-w-full divide-y divide-neutral-200 text-sm;
+  }
+
+  .dark .table {
+    @apply divide-neutral-700;
   }
 
   .table thead {
     @apply bg-neutral-50;
   }
 
+  .dark .table thead {
+    @apply bg-neutral-800;
+  }
+
   .table th {
     @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-neutral-500;
+  }
+
+  .dark .table th {
+    @apply text-neutral-400;
   }
 
   .table td {
     @apply whitespace-nowrap px-4 py-3 text-neutral-700;
   }
 
+  .dark .table td {
+    @apply text-neutral-300;
+  }
+
   .table tbody tr {
     @apply border-t border-neutral-100 transition-colors hover:bg-primary-50/40;
   }
 
+  .dark .table tbody tr {
+    @apply border-neutral-700 hover:bg-neutral-700/40;
+  }
+
   .table tbody tr:nth-child(even) {
     @apply bg-neutral-50/50;
+  }
+
+  .dark .table tbody tr:nth-child(even) {
+    @apply bg-neutral-800/50;
   }
 
   /* Alerts */
@@ -239,6 +350,22 @@
     @apply alert border-danger-200 bg-danger-50 text-danger-800;
   }
 
+  .dark .alert-info {
+    @apply border-primary-700 bg-primary-900/50 text-primary-200;
+  }
+
+  .dark .alert-success {
+    @apply border-success-700 bg-success-900/50 text-success-200;
+  }
+
+  .dark .alert-warning {
+    @apply border-yellow-700 bg-yellow-900/50 text-yellow-200;
+  }
+
+  .dark .alert-danger {
+    @apply border-danger-700 bg-danger-900/50 text-danger-200;
+  }
+
   /* Page layout helpers */
   .page-header {
     @apply mb-6 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between;
@@ -248,8 +375,16 @@
     @apply text-2xl font-semibold text-primary-800;
   }
 
+  .dark .page-title {
+    @apply text-neutral-100;
+  }
+
   .page-subtitle {
     @apply text-sm text-neutral-500;
+  }
+
+  .dark .page-subtitle {
+    @apply text-neutral-400;
   }
 
   /* Stat cards (dashboard) */
@@ -261,8 +396,16 @@
     @apply text-xs font-semibold uppercase tracking-wide text-neutral-500;
   }
 
+  .dark .stat-label {
+    @apply text-neutral-400;
+  }
+
   .stat-value {
     @apply mt-1 text-2xl font-bold text-primary-800;
+  }
+
+  .dark .stat-value {
+    @apply text-neutral-100;
   }
 
   .stat-change {
@@ -276,8 +419,16 @@
            hover:bg-primary-50 hover:text-primary-800;
   }
 
+  .dark .nav-link {
+    @apply text-neutral-400 hover:bg-neutral-700 hover:text-neutral-100;
+  }
+
   .nav-link-active {
     @apply nav-link bg-primary-50 text-primary-800 font-semibold;
+  }
+
+  .dark .nav-link-active {
+    @apply bg-neutral-700 text-white;
   }
 
   /* Skeleton loaders */
@@ -285,9 +436,17 @@
     @apply animate-pulse rounded bg-neutral-200;
   }
 
+  .dark .skeleton {
+    @apply bg-neutral-700;
+  }
+
   /* Divider */
   .divider {
     @apply my-4 border-t border-neutral-200;
+  }
+
+  .dark .divider {
+    @apply border-neutral-700;
   }
 }
 

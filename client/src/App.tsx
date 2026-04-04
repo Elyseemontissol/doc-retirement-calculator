@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
@@ -39,6 +40,7 @@ function PageLoader() {
 
 export default function App() {
   return (
+    <ThemeProvider>
     <BrowserRouter>
       <AuthProvider>
         <Suspense fallback={<PageLoader />}>
@@ -96,5 +98,6 @@ export default function App() {
         </Suspense>
       </AuthProvider>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
