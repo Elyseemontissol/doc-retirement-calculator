@@ -536,7 +536,7 @@ export default function Dashboard() {
                     contentStyle={{ borderRadius: '8px' }}
                     wrapperClassName="chart-tooltip"
                   />
-                  <Bar dataKey="count" name="Cases" className="chart-bar" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="count" name="Cases" fill="var(--chart-bar-fill, #1e3a5f)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
               </div>
