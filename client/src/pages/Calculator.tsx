@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import gsap from 'gsap';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { format, differenceInYears, parseISO } from 'date-fns';
 import {
   Search,
@@ -171,41 +170,6 @@ export default function Calculator() {
 
   // -- Scenario comparison --
   const [scenarios, setScenarios] = useState<CalculationResult[]>([]);
-
-  // -- Animation refs --
-  const stepContentRef = useRef<HTMLDivElement>(null);
-
-  // Animate step content on step change
-  useEffect(() => {
-    if (stepContentRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.from(stepContentRef.current, {
-          opacity: 0,
-          y: 15,
-          duration: 0.4,
-          ease: 'power2.out',
-        });
-      }, stepContentRef);
-      return () => ctx.revert();
-    }
-  }, [step]);
-
-  // Animate result cards when results arrive (step 4)
-  useEffect(() => {
-    if (step === 3 && result && stepContentRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.from('.calc-result-card', {
-          opacity: 0,
-          y: 20,
-          stagger: 0.08,
-          duration: 0.4,
-          delay: 0.15,
-          ease: 'power2.out',
-        });
-      }, stepContentRef);
-      return () => ctx.revert();
-    }
-  }, [step, result]);
 
   // -- Fetch employees when search changes --
   const fetchEmployees = useCallback(async (search: string) => {
@@ -943,7 +907,7 @@ export default function Calculator() {
         {/* Detail sections */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Service Credit */}
-          <div className="card calc-result-card">
+          <div className="card">
             <div className="card-header">
               <h3 className="font-semibold flex items-center gap-2">
                 <Clock className="h-4 w-4 text-primary-600" />
@@ -970,7 +934,7 @@ export default function Calculator() {
           </div>
 
           {/* High-3 */}
-          <div className="card calc-result-card">
+          <div className="card">
             <div className="card-header">
               <h3 className="font-semibold flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 text-primary-600" />
@@ -1008,7 +972,7 @@ export default function Calculator() {
           </div>
 
           {/* Annuity Calculation */}
-          <div className="card calc-result-card">
+          <div className="card">
             <div className="card-header">
               <h3 className="font-semibold flex items-center gap-2">
                 <DollarSign className="h-4 w-4 text-primary-600" />
@@ -1036,7 +1000,7 @@ export default function Calculator() {
 
           {/* FERS Supplement */}
           {showFers && result.fersSupplement != null && (
-            <div className="card calc-result-card">
+            <div className="card">
               <div className="card-header">
                 <h3 className="font-semibold flex items-center gap-2">
                   <Building2 className="h-4 w-4 text-primary-600" />
@@ -1057,7 +1021,7 @@ export default function Calculator() {
           )}
 
           {/* TSP Income */}
-          <div className="card calc-result-card">
+          <div className="card">
             <div className="card-header">
               <h3 className="font-semibold flex items-center gap-2">
                 <PiggyBank className="h-4 w-4 text-primary-600" />
@@ -1079,7 +1043,7 @@ export default function Calculator() {
           </div>
 
           {/* Social Security */}
-          <div className="card calc-result-card">
+          <div className="card">
             <div className="card-header">
               <h3 className="font-semibold flex items-center gap-2">
                 <Building2 className="h-4 w-4 text-primary-600" />
@@ -1105,7 +1069,7 @@ export default function Calculator() {
           </div>
 
           {/* FEGLI */}
-          <div className="card calc-result-card">
+          <div className="card">
             <div className="card-header">
               <h3 className="font-semibold flex items-center gap-2">
                 <Shield className="h-4 w-4 text-primary-600" />
@@ -1124,7 +1088,7 @@ export default function Calculator() {
           </div>
 
           {/* Total Income Pie Chart */}
-          <div className="card calc-result-card lg:col-span-2">
+          <div className="card lg:col-span-2">
             <div className="card-header">
               <h3 className="font-semibold flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 text-primary-600" />
@@ -1292,12 +1256,10 @@ export default function Calculator() {
       {renderStepIndicator()}
 
       {/* Step content */}
-      <div ref={stepContentRef} key={step}>
-        {step === 0 && renderStep1()}
-        {step === 1 && renderStep2()}
-        {step === 2 && renderStep3()}
-        {step === 3 && renderStep4()}
-      </div>
+      {step === 0 && renderStep1()}
+      {step === 1 && renderStep2()}
+      {step === 2 && renderStep3()}
+      {step === 3 && renderStep4()}
 
       {/* Navigation */}
       {step < 3 && (
@@ -1368,7 +1330,7 @@ function StatCard({
     neutral: 'text-neutral-600 bg-neutral-100',
   };
   return (
-    <div className="stat-card calc-result-card flex items-start gap-4">
+    <div className="stat-card flex items-start gap-4">
       <div
         className={`flex h-10 w-10 items-center justify-center rounded-lg ${iconColors[accent]}`}
       >

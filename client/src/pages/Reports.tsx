@@ -40,9 +40,9 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: 'demographics', label: 'Demographics' },
 ];
 
-const PIE_COLORS = ['#5b7faf', '#d4a422', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
-const BAR_COLOR = 'var(--chart-bar-fill, #1e3a5f)';
-const BAR_ACCENT = '#d4a422';
+const PIE_COLORS = ['#1e3a5f', '#c5a54e', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
+const BAR_COLOR = '#1e3a5f';
+const BAR_ACCENT = '#c5a54e';
 
 function statusLabel(status: string): string {
   return status.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
@@ -300,13 +300,13 @@ function CaseMetricsTab({ data }: { data: CasesReport }) {
             {byMonthData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={byMonthData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" className="chart-grid" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis dataKey="name" tick={{ fontSize: 11 }} angle={-30} textAnchor="end" height={60} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
                   <Tooltip
                     contentStyle={{
                       borderRadius: '8px',
-                      border: 'none',
+                      border: '1px solid #e5e7eb',
                       boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                     }}
                   />
@@ -347,7 +347,7 @@ function CaseMetricsTab({ data }: { data: CasesReport }) {
                   <Tooltip
                     contentStyle={{
                       borderRadius: '8px',
-                      border: 'none',
+                      border: '1px solid #e5e7eb',
                       boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                     }}
                   />
@@ -448,13 +448,13 @@ function DemographicsTab({ data }: { data: DemographicsReport }) {
             {byAgeData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={byAgeData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" className="chart-grid" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis dataKey="name" tick={{ fontSize: 12 }} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
                   <Tooltip
                     contentStyle={{
                       borderRadius: '8px',
-                      border: 'none',
+                      border: '1px solid #e5e7eb',
                       boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                     }}
                   />
@@ -497,7 +497,7 @@ function DemographicsTab({ data }: { data: DemographicsReport }) {
                   <Tooltip
                     contentStyle={{
                       borderRadius: '8px',
-                      border: 'none',
+                      border: '1px solid #e5e7eb',
                       boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                     }}
                   />

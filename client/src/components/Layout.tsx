@@ -1,6 +1,5 @@
-import { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import gsap from 'gsap';
 import {
   LayoutDashboard,
   Users,
@@ -76,51 +75,6 @@ export default function Layout() {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const desktopNavRef = useRef<HTMLElement>(null);
-  const mainContentRef = useRef<HTMLDivElement>(null);
-  const mobileSidebarRef = useRef<HTMLElement>(null);
-
-  // Desktop sidebar nav links stagger fade-in on mount
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      if (desktopNavRef.current) {
-        gsap.from(desktopNavRef.current.children, {
-          opacity: 0,
-          x: -15,
-          stagger: 0.06,
-          duration: 0.4,
-          ease: 'power2.out',
-        });
-      }
-    }, desktopNavRef);
-    return () => ctx.revert();
-  }, []);
-
-  // Main content area fade-in on mount
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      if (mainContentRef.current) {
-        gsap.from(mainContentRef.current, {
-          opacity: 0,
-          duration: 0.4,
-          ease: 'power2.out',
-        });
-      }
-    }, mainContentRef);
-    return () => ctx.revert();
-  }, []);
-
-  // Mobile sidebar slide-in animation
-  useEffect(() => {
-    if (sidebarOpen && mobileSidebarRef.current) {
-      gsap.fromTo(
-        mobileSidebarRef.current,
-        { x: -264 },
-        { x: 0, duration: 0.3, ease: 'power2.out' },
-      );
-    }
-  }, [sidebarOpen]);
 
   const handleLogout = () => {
     logout();
@@ -214,7 +168,7 @@ export default function Layout() {
         {/*  Sidebar (desktop)                                              */}
         {/* -------------------------------------------------------------- */}
         <aside className="hidden w-60 shrink-0 border-r border-neutral-200 bg-white lg:flex lg:flex-col">
-          <nav ref={desktopNavRef} className="flex-1 space-y-1 overflow-y-auto px-3 py-4 scrollbar-thin">
+          <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4 scrollbar-thin">
             {renderNavLinks()}
           </nav>
         </aside>
@@ -230,7 +184,7 @@ export default function Layout() {
               onClick={() => setSidebarOpen(false)}
             />
             {/* Drawer */}
-            <aside ref={mobileSidebarRef} className="fixed inset-y-0 left-0 z-20 w-64 bg-white pt-16 shadow-lg lg:hidden">
+            <aside className="fixed inset-y-0 left-0 z-20 w-64 bg-white pt-16 shadow-lg lg:hidden">
               <nav className="space-y-1 px-3 py-4">
                 {renderNavLinks(() => setSidebarOpen(false))}
               </nav>
@@ -242,7 +196,7 @@ export default function Layout() {
         {/*  Main content                                                   */}
         {/* -------------------------------------------------------------- */}
         <div className="flex flex-1 flex-col overflow-hidden">
-          <main ref={mainContentRef} className="flex-1 overflow-y-auto bg-neutral-50 p-4 sm:p-6 lg:p-8">
+          <main className="flex-1 overflow-y-auto bg-neutral-50 p-4 sm:p-6 lg:p-8">
             <Outlet />
           </main>
 
