@@ -304,3 +304,278 @@
     scrollbar-color: theme('colors.neutral.300') transparent;
   }
 }
+
+/* ================================================================== */
+/*                                                                    */
+/*  DARK MODE                                                         */
+/*                                                                    */
+/*  Everything below is scoped to html.dark. Placed outside @layer    */
+/*  for higher specificity than Tailwind utilities. Light mode above  */
+/*  is completely untouched.                                          */
+/*                                                                    */
+/* ================================================================== */
+
+/* ---- Base surfaces & text ---- */
+html.dark body {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+  color: #f1f5f9;
+}
+
+html.dark a {
+  color: #7895bd;
+}
+html.dark a:hover {
+  color: #9fb3d0;
+}
+
+/* ---- Global background swaps ---- */
+html.dark .bg-white    { background-color: #1e293b; }
+html.dark .bg-neutral-50  { background-color: #0f172a; }
+html.dark .bg-neutral-50\/50 { background-color: #0f172a; }
+html.dark .bg-neutral-100 { background-color: #1e293b; }
+
+/* Tinted light backgrounds → subtle dark tints */
+html.dark .bg-primary-50     { background-color: rgba(30, 58, 95, 0.2); }
+html.dark .bg-primary-50\/40 { background-color: rgba(30, 58, 95, 0.15); }
+html.dark .bg-primary-100    { background-color: rgba(30, 58, 95, 0.3); }
+html.dark .bg-primary-200    { background-color: rgba(30, 58, 95, 0.4); }
+html.dark .bg-blue-100       { background-color: rgba(59, 130, 246, 0.12); }
+html.dark .bg-yellow-100     { background-color: rgba(245, 158, 11, 0.12); }
+html.dark .bg-green-100,
+html.dark .bg-success-100    { background-color: rgba(16, 185, 129, 0.12); }
+html.dark .bg-accent-100     { background-color: rgba(183, 121, 31, 0.15); }
+html.dark .bg-danger-100,
+html.dark .bg-red-100        { background-color: rgba(239, 68, 68, 0.12); }
+html.dark .bg-purple-100     { background-color: rgba(139, 92, 246, 0.12); }
+
+/* ---- Global text color swaps ---- */
+html.dark .text-neutral-800 { color: #e2e8f0; }
+html.dark .text-neutral-700 { color: #cbd5e1; }
+html.dark .text-neutral-600 { color: #94a3b8; }
+html.dark .text-neutral-500 { color: #94a3b8; }
+html.dark .text-neutral-400 { color: #64748b; }
+
+html.dark .text-primary-800 { color: #c5d1e3; }
+html.dark .text-primary-700 { color: #9fb3d0; }
+html.dark .text-primary-600 { color: #9fb3d0; }
+
+html.dark .text-accent-700,
+html.dark .text-accent-800 { color: #f3d98a; }
+
+html.dark .text-success-700,
+html.dark .text-success-800 { color: #6ee7b7; }
+
+html.dark .text-danger-500,
+html.dark .text-danger-600,
+html.dark .text-danger-700 { color: #fca5a5; }
+
+html.dark .text-yellow-700,
+html.dark .text-yellow-800 { color: #fde68a; }
+
+html.dark .text-blue-700 { color: #93c5fd; }
+html.dark .text-purple-700 { color: #c4b5fd; }
+
+/* ---- Global border swaps ---- */
+html.dark .border-neutral-50,
+html.dark .border-neutral-100,
+html.dark .border-neutral-200 { border-color: #334155; }
+html.dark .border-neutral-300 { border-color: #475569; }
+html.dark .border-primary-200,
+html.dark .border-primary-300 { border-color: #334155; }
+
+html.dark .divide-neutral-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #334155;
+}
+
+/* ---- Cards ---- */
+html.dark .card {
+  background-color: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .card-header { border-color: #334155; }
+
+html.dark .card-footer {
+  background-color: #172033;
+  border-color: #334155;
+}
+
+/* ---- Buttons ---- */
+html.dark .btn-primary {
+  background-color: #3e69a1;
+}
+html.dark .btn-primary:hover {
+  background-color: #5b7faf;
+}
+
+html.dark .btn-secondary {
+  background-color: #334155;
+  border-color: #475569;
+  color: #e2e8f0;
+}
+html.dark .btn-secondary:hover {
+  background-color: #475569;
+}
+
+html.dark .btn-ghost {
+  color: #cbd5e1;
+}
+html.dark .btn-ghost:hover {
+  background-color: #334155;
+  color: #f1f5f9;
+}
+
+html.dark .btn:focus {
+  --tw-ring-offset-color: #1e293b;
+}
+
+/* ---- Forms ---- */
+html.dark .form-label { color: #cbd5e1; }
+
+html.dark .form-input,
+html.dark .form-select,
+html.dark .form-textarea {
+  background-color: #334155;
+  border-color: #475569;
+  color: #f1f5f9;
+}
+
+html.dark .form-input::placeholder,
+html.dark .form-textarea::placeholder {
+  color: #64748b;
+}
+
+html.dark .form-input:focus,
+html.dark .form-select:focus,
+html.dark .form-textarea:focus {
+  border-color: #5b7faf;
+  --tw-ring-color: rgba(59, 130, 246, 0.2);
+}
+
+html.dark .form-input:disabled,
+html.dark .form-select:disabled {
+  background-color: #1e293b;
+  color: #64748b;
+}
+
+html.dark .form-checkbox {
+  border-color: #475569;
+  background-color: #334155;
+}
+
+html.dark .form-error { color: #fca5a5; }
+html.dark .form-hint  { color: #64748b; }
+
+/* ---- Badges ---- */
+html.dark .badge-primary  { background-color: rgba(30, 58, 95, 0.45); color: #c5d1e3; }
+html.dark .badge-accent   { background-color: rgba(183, 121, 31, 0.25); color: #f3d98a; }
+html.dark .badge-success  { background-color: rgba(16, 185, 129, 0.18); color: #6ee7b7; }
+html.dark .badge-danger   { background-color: rgba(239, 68, 68, 0.18); color: #fca5a5; }
+html.dark .badge-neutral  { background-color: #334155; color: #cbd5e1; }
+html.dark .badge-warning  { background-color: rgba(245, 158, 11, 0.18); color: #fde68a; }
+
+/* ---- Tables ---- */
+html.dark .table-wrapper { border-color: #334155; }
+
+html.dark .table { --tw-divide-color: #334155; }
+
+html.dark .table thead { background-color: #172033; }
+html.dark .table th    { color: #94a3b8; }
+html.dark .table td    { color: #cbd5e1; }
+
+html.dark .table tbody tr {
+  border-color: #1e293b;
+}
+html.dark .table tbody tr:hover {
+  background-color: rgba(51, 65, 85, 0.35);
+}
+html.dark .table tbody tr:nth-child(even) {
+  background-color: rgba(30, 41, 59, 0.5);
+}
+
+/* ---- Alerts ---- */
+html.dark .alert-info {
+  background-color: rgba(30, 58, 95, 0.25);
+  border-color: #1f3f6b;
+  color: #c5d1e3;
+}
+html.dark .alert-success {
+  background-color: rgba(16, 185, 129, 0.12);
+  border-color: #065f46;
+  color: #6ee7b7;
+}
+html.dark .alert-warning {
+  background-color: rgba(245, 158, 11, 0.12);
+  border-color: #92400e;
+  color: #fde68a;
+}
+html.dark .alert-danger {
+  background-color: rgba(239, 68, 68, 0.12);
+  border-color: #991b1b;
+  color: #fca5a5;
+}
+
+/* ---- Page elements ---- */
+html.dark .page-title    { color: #f1f5f9; }
+html.dark .page-subtitle { color: #94a3b8; }
+html.dark .stat-label    { color: #94a3b8; }
+html.dark .stat-value    { color: #f1f5f9; }
+
+/* ---- Sidebar navigation ---- */
+html.dark .nav-link {
+  color: #94a3b8;
+}
+html.dark .nav-link:hover {
+  background-color: #334155;
+  color: #f1f5f9;
+}
+html.dark .nav-link-active {
+  background-color: #334155;
+  color: #f1f5f9;
+}
+
+/* ---- Skeleton ---- */
+html.dark .skeleton { background-color: #334155; }
+
+/* ---- Divider ---- */
+html.dark .divider { border-color: #334155; }
+
+/* ---- Shadows ---- */
+html.dark .shadow-sm,
+html.dark .shadow-card { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
+html.dark .shadow-lg   { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
+
+/* ---- Recharts ---- */
+html.dark .recharts-default-tooltip {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+html.dark .recharts-tooltip-label        { color: #f1f5f9 !important; }
+html.dark .recharts-tooltip-item         { color: #cbd5e1 !important; }
+html.dark .recharts-legend-item-text     { color: #cbd5e1 !important; }
+html.dark .recharts-cartesian-grid line  { stroke: #334155; }
+html.dark .recharts-xAxis .recharts-cartesian-axis-tick-value,
+html.dark .recharts-yAxis .recharts-cartesian-axis-tick-value {
+  fill: #94a3b8;
+}
+
+/* ---- Scrollbar ---- */
+html.dark .scrollbar-thin {
+  scrollbar-color: #475569 transparent;
+}
+
+/* ---- Dropdown/popover panels (search results, etc.) ---- */
+html.dark .border.bg-white,
+html.dark .shadow-lg.bg-white {
+  background-color: #1e293b;
+}

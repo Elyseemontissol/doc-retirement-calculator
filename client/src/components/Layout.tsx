@@ -12,8 +12,11 @@ import {
   X,
   LogOut,
   Shield,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import type { UserRole } from '../types';
 
 // ---------------------------------------------------------------------------
@@ -69,6 +72,7 @@ function roleLabel(role: UserRole): string {
 
 export default function Layout() {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -131,13 +135,22 @@ export default function Layout() {
 
         {/* Right: user info + logout */}
         {user && (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="hidden items-center gap-2 sm:flex">
               <span className="text-sm font-medium">
                 {user.firstName} {user.lastName}
               </span>
               <span className={roleBadgeClass(user.role)}>{roleLabel(user.role)}</span>
             </div>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="rounded-md p-2 text-primary-200 hover:bg-primary-700 hover:text-white transition-colors"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
             <button
               type="button"
               onClick={handleLogout}
