@@ -438,6 +438,7 @@ export default function Calculator() {
                   onFocus={() => {
                     if (employeeList.length > 0) setShowDropdown(true);
                   }}
+                  autoComplete="off"
                 />
               </div>
               {errors.employee && (
