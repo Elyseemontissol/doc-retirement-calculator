@@ -468,7 +468,7 @@ export default function Calculator() {
                       <button
                         key={emp.id}
                         type="button"
-                        className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm hover:bg-primary-50 transition-colors border-b border-neutral-50 last:border-0"
+                        className="emp-dropdown-item flex w-full items-center gap-3 px-4 py-3 text-left text-sm hover:bg-primary-50 transition-colors border-b border-neutral-50 last:border-0"
                         onClick={() => {
                           setSelectedEmployee(emp);
                           setEmployeeSearch('');
@@ -477,15 +477,15 @@ export default function Calculator() {
                           setErrors({});
                         }}
                       >
-                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-100 text-primary-700 font-bold text-xs">
+                        <div className="emp-dropdown-avatar flex h-9 w-9 items-center justify-center rounded-full bg-primary-800 text-white font-bold text-xs">
                           {emp.firstName[0]}
                           {emp.lastName[0]}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-neutral-800 truncate">
+                          <p className="emp-dropdown-name font-semibold truncate">
                             {emp.firstName} {emp.lastName}
                           </p>
-                          <p className="text-xs text-neutral-500">
+                          <p className="emp-dropdown-sub text-xs">
                             {emp.retirementPlan} &middot; {emp.payPlan}-{emp.grade}/{emp.step}
                           </p>
                         </div>

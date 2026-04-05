@@ -699,6 +699,18 @@ html.dark .scrollbar-thin {
 
 /* ---- Dropdown/popover panels (search results, etc.) ---- */
 html.dark .border.bg-white,
-html.dark .shadow-lg.bg-white {
+html.dark .shadow-lg.bg-white,
+html.dark .bg-white.shadow-lg {
   background-color: #1e293b;
 }
+
+/* Employee dropdown items */
+.emp-dropdown-name { color: #1f2937; }
+.emp-dropdown-sub  { color: #6b7280; }
+.emp-dropdown-item:hover { background-color: #f0f4f8; }
+
+html.dark .emp-dropdown-name { color: #f1f5f9; }
+html.dark .emp-dropdown-sub  { color: #94a3b8; }
+html.dark .emp-dropdown-item:hover { background-color: #334155; }
+html.dark .emp-dropdown-avatar { background-color: #5b7faf; }
+
