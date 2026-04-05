@@ -306,13 +306,28 @@ export function generateForm(
   retirementCase?: RetirementCase,
   calculation?: CalculationResult
 ): GeneratedForm {
+  // Create a default stub case if none provided (for standalone form generation)
+  const caseOrStub: RetirementCase = retirementCase ?? {
+    id: 'stub',
+    employeeId: employee.id,
+    caseNumber: 'DRAFT',
+    type: 'voluntary',
+    status: 'draft',
+    retirementDate: new Date(new Date().getFullYear() + 1, 0, 1).toISOString().split('T')[0],
+    assignedSpecialistId: null,
+    calculations: [],
+    determinations: [],
+    forms: [],
+    notes: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
   switch (formNumber) {
     case 'SF-2801':
-      if (!retirementCase) throw new Error('Retirement case required for SF-2801');
-      return generateSF2801(employee, retirementCase, calculation);
+      return generateSF2801(employee, caseOrStub, calculation);
     case 'SF-3107':
-      if (!retirementCase) throw new Error('Retirement case required for SF-3107');
-      return generateSF3107(employee, retirementCase, calculation);
+      return generateSF3107(employee, caseOrStub, calculation);
     case 'SF-2818':
       return generateSF2818(employee);
     case 'TSP-70':
