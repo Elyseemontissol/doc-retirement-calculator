@@ -218,9 +218,10 @@ export default function FormsCenter() {
       });
       setGeneratedForms((prev) => [result, ...prev]);
       closeGenerate();
-    } catch (err) {
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { data?: { error?: string } } };
       setGenerateError(
-        err instanceof Error ? err.message : 'Failed to generate form. Please try again.',
+        axiosErr?.response?.data?.error || (err instanceof Error ? err.message : 'Failed to generate form. Please try again.'),
       );
     } finally {
       setGenerating(false);
