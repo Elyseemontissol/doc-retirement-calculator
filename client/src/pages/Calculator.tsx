@@ -1315,15 +1315,18 @@ export default function Calculator() {
       {/* Navigation */}
       {step < 3 && (
         <div className="mx-auto mt-8 flex max-w-2xl items-center justify-between">
-          <button
-            type="button"
-            className="btn-secondary"
-            disabled={step === 0}
-            onClick={goBack}
-          >
-            <ChevronLeft className="h-4 w-4" />
-            Back
-          </button>
+          {step > 0 ? (
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={goBack}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Back
+            </button>
+          ) : (
+            <div />
+          )}
           {step < 2 && (
             <button type="button" className="btn-primary" onClick={goNext}>
               Next
