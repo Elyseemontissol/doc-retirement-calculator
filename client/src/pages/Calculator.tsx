@@ -199,15 +199,16 @@ export default function Calculator() {
 
   useEffect(() => {
     if (selectedEmployee) return;
+    if (employeeSearch.length < 1) {
+      setEmployeeList([]);
+      setShowDropdown(false);
+      return;
+    }
+    setLoadingEmployees(true);
+    setShowDropdown(true);
     const t = setTimeout(() => {
-      if (employeeSearch.length >= 1) {
-        fetchEmployees(employeeSearch);
-        setShowDropdown(true);
-      } else {
-        setEmployeeList([]);
-        setShowDropdown(false);
-      }
-    }, 300);
+      fetchEmployees(employeeSearch);
+    }, 250);
     return () => clearTimeout(t);
   }, [employeeSearch, fetchEmployees, selectedEmployee]);
 
