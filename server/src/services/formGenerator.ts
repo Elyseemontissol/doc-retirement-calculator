@@ -306,6 +306,14 @@ export function generateForm(
   retirementCase?: RetirementCase,
   calculation?: CalculationResult
 ): GeneratedForm {
+  // Validate that the form applies to this employee's retirement plan
+  const formType = FORM_TYPES.find(f => f.formNumber === formNumber);
+  if (formType && !formType.applicableSystems.includes(employee.retirementPlan)) {
+    throw new Error(
+      `${formNumber} is for ${formType.applicableSystems.join('/')} employees. ${employee.firstName} ${employee.lastName} is under ${employee.retirementPlan}.`
+    );
+  }
+
   // Create a default stub case if none provided (for standalone form generation)
   const caseOrStub: RetirementCase = retirementCase ?? {
     id: 'stub',

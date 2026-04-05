@@ -308,6 +308,7 @@ export interface FormType {
   formNumber: string;
   formName: string;
   description: string;
+  applicableSystems: string[];
 }
 
 export interface GenerateFormRequest {
