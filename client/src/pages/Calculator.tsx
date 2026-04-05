@@ -185,32 +185,36 @@ export default function Calculator() {
   const [scenarios, setScenarios] = useState<CalculationResult[]>([]);
 
   // -- Fetch employees when search changes --
-  const fetchEmployees = useCallback(async (search: string) => {
-    setLoadingEmployees(true);
-    try {
-      const res = await employeesApi.list({ search, limit: 20 });
-      setEmployeeList(res.data);
-    } catch {
-      setEmployeeList([]);
-    } finally {
-      setLoadingEmployees(false);
-    }
-  }, []);
+  const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    if (selectedEmployee) return;
-    if (employeeSearch.length < 1) {
+  const handleSearchChange = useCallback((value: string) => {
+    setEmployeeSearch(value);
+    setSelectedEmployee(null);
+    setErrors({});
+
+    if (searchTimer.current) clearTimeout(searchTimer.current);
+
+    if (value.length < 1) {
       setEmployeeList([]);
       setShowDropdown(false);
+      setLoadingEmployees(false);
       return;
     }
+
     setLoadingEmployees(true);
     setShowDropdown(true);
-    const t = setTimeout(() => {
-      fetchEmployees(employeeSearch);
+
+    searchTimer.current = setTimeout(async () => {
+      try {
+        const res = await employeesApi.list({ search: value, limit: 20 });
+        setEmployeeList(res.data);
+      } catch {
+        setEmployeeList([]);
+      } finally {
+        setLoadingEmployees(false);
+      }
     }, 250);
-    return () => clearTimeout(t);
-  }, [employeeSearch, fetchEmployees, selectedEmployee]);
+  }, []);
 
   // Reset retirement type when employee changes (different plan = different options)
   useEffect(() => {
@@ -435,9 +439,9 @@ export default function Calculator() {
                   className="form-input pl-9"
                   placeholder="Type a name to search..."
                   value={employeeSearch}
-                  onChange={(e) => setEmployeeSearch(e.target.value)}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                   onFocus={() => {
-                    if (employeeList.length > 0) setShowDropdown(true);
+                    if (employeeList.length > 0 && !selectedEmployee) setShowDropdown(true);
                   }}
                   autoComplete="off"
                 />
