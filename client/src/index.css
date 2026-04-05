@@ -364,7 +364,7 @@ html.dark .text-neutral-600 { color: #94a3b8; }
 html.dark .text-neutral-500 { color: #94a3b8; }
 html.dark .text-neutral-400 { color: #64748b; }
 
-html.dark .text-primary-800 { color: #c5d1e3; }
+html.dark .text-primary-800 { color: #e2eaf3; }
 html.dark .text-primary-700 { color: #9fb3d0; }
 html.dark .text-primary-600 { color: #9fb3d0; }
 
@@ -399,7 +399,7 @@ html.dark .divide-neutral-200 > :not([hidden]) ~ :not([hidden]) {
 /* ---- Cards ---- */
 html.dark .card {
   background-color: #1e293b;
-  border-color: #334155;
+  border-color: #475569;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
@@ -668,6 +668,7 @@ html.dark .bg-amber-100    { background-color: rgba(245, 158, 11, 0.15); }
 html.dark .bg-accent-50    { background-color: rgba(183, 121, 31, 0.1); }
 html.dark .bg-blue-50      { background-color: rgba(59, 130, 246, 0.1); }
 html.dark .hover\:bg-neutral-200:hover { background-color: #334155; }
+html.dark .hover\:bg-neutral-50:hover { background-color: #283548; }
 
 /* ---- Additional border colors ---- */
 html.dark .border-primary-500 { border-color: #5b7faf; }
